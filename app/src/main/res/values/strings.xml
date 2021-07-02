@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DroneDT</string>
+    <string name="default_robot">Turtlebot2</string>
+    <string name="default_app">Map-View Turtlebot2</string>
+    <string name="map_frame">map</string>
+    <string name="camera_topic">/camera/color/image_raw</string>
+    <string name="map_topic">/map</string>
+</resources>
