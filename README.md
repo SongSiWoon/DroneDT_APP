@@ -1,2 +1,2 @@
 # DroneDT_Mobile
-commit test
+This application can control drones through mavros.
