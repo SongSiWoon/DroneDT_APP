@@ -2,360 +2,474 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Drone.DigitalTwin.Application.MainActivity">
 
     <LinearLayout
-        android:id="@+id/top_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="#ff404040"
-        android:gravity="end"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints" >
-    </LinearLayout>
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#000000">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.05"/>
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2">
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+
+            <org.ros.android.view.RosImageView
+                android:id="@+id/image"
                 android:layout_width="match_parent"
-                android:layout_gravity="center">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="bottom|right"
-                    android:text="BATTERY"
-                    android:textSize="26sp"
-                    android:textColor="#005566"
-                    android:textStyle="bold"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/stand"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <SeekBar
+                android:id="@+id/height"
+                android:layout_width="250dp"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:max="500"
+                android:progressDrawable="@drawable/seekbar"
+                android:rotation="270"
+                android:thumb="@drawable/seekbar_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/position_layout"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/position_layout" />
+
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.65" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline4"
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <org.ros.android.view.RosTextView
                     android:id="@+id/text"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
+                    android:layout_weight="6"
                     android:gravity="right"
                     android:text="bat"
                     android:textColor="#000000"
-                    android:textSize="12sp" />
+                    android:textSize="20sp" />
 
                 <ProgressBar
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="6"
+                    android:id="@+id/progress"
                     style="@android:style/Widget.ProgressBar.Horizontal"
-                    android:progressDrawable="@drawable/progressbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
                     android:layout_marginTop="5dp"
-                    android:id="@+id/progress" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
-
-            </TableRow>
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="POSITION"
-                    android:textSize="26sp"
-                    android:textColor="#005566"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"/>
-            </TableRow>
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="X"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"/>
-                <org.ros.android.view.RosTextView
-                    android:id="@+id/text_x"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:gravity="right"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:text="" />
-            </TableRow>
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="Y"
-                    android:textColor="#FFFFFF"
-                    android:textSize="26sp"
-                    android:textStyle="bold"/>
-                <org.ros.android.view.RosTextView
-                    android:id="@+id/text_y"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:gravity="right"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:text="" />
-            </TableRow>
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="Z"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"/>
-                <org.ros.android.view.RosTextView
-                    android:id="@+id/text_z"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:gravity="right"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:text="" />
-            </TableRow>
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="ORIENTATION"
-                    android:textSize="26sp"
-                    android:textColor="#005566"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"/>
-            </TableRow>
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="X"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"/>
-                <org.ros.android.view.RosTextView
-                    android:id="@+id/text_ox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:gravity="right"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:text="" />
-            </TableRow>
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="Y"
-                    android:textColor="#FFFFFF"
-                    android:textSize="26sp"
-                    android:textStyle="bold"/>
-                <org.ros.android.view.RosTextView
-                    android:id="@+id/text_oy"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:gravity="right"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:text="" />
-            </TableRow>
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="Z"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"/>
-                <org.ros.android.view.RosTextView
-                    android:id="@+id/text_oz"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:gravity="right"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:text="" />
-            </TableRow>
-            <TableRow
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="W"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"/>
-                <org.ros.android.view.RosTextView
-                    android:id="@+id/text_ow"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:gravity="right"
-                    android:textSize="26sp"
-                    android:textColor="#FFFFFF"
-                    android:text="" />
-            </TableRow>
-        </TableLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:orientation="horizontal"
-            android:background="#003344">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|right"
-                android:text="ARM"
-                android:textSize="26sp"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"/>
-            <Switch
-                android:id="@+id/arm_switch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:color="#F00000"
-                android:track="@drawable/switch_track_selector"
-                android:thumb="@drawable/switch_thumb_selector" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|right"
-                android:text="OFFBOARD"
-                android:textSize="26sp"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"/>
-            <Switch
-                android:id="@+id/offboard_switch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:gravity="center|left"
-                android:color="#F00000"
-                android:track="@drawable/switch_track_selector"
-                android:thumb="@drawable/switch_thumb_selector" />
-        </LinearLayout>
-        <FrameLayout
-            android:id="@+id/FrameLayout01"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:background="#000000">
-            <org.ros.android.view.RosImageView
-                android:id="@+id/image"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/stand"
-                android:layout_gravity="bottom"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-                <SeekBar
-                    android:id="@+id/height"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:rotation="270"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="85dp"
-                    android:max="500"
-                    android:thumb="@drawable/seekbar_thumb"
-                    android:progressDrawable="@drawable/seekbar"
-                    />
-            <LinearLayout
-                android:layout_width="420dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:layout_gravity="right|bottom"
-                android:gravity="center">
-
-                <RelativeLayout
-                    android:id="@+id/layout_joystick"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:layout_marginBottom="85dp"
-                    android:background="@drawable/button"></RelativeLayout>
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:max="100"
+                    android:progressDrawable="@drawable/progressbar"/>
 
             </LinearLayout>
-        </FrameLayout>
+
+            <TableLayout
+                android:id="@+id/position_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline4">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/Position"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="POSITION"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/p"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="textview"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="invisible" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/x_position"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="X"
+                        android:textColor="@android:color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <org.ros.android.view.RosTextView
+                        android:id="@+id/text_x"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="26sp"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/y_position"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="Y"
+                        android:textColor="@android:color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
+
+                    <org.ros.android.view.RosTextView
+                        android:id="@+id/text_y"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="26sp"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/z_position"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="Z"
+                        android:textColor="@android:color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
+
+                    <org.ros.android.view.RosTextView
+                        android:id="@+id/text_z"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="26sp"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/Orientation"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="ORIENTATION"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/o"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/x_orientation"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="X"
+                        android:textColor="@android:color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
+
+                    <org.ros.android.view.RosTextView
+                        android:id="@+id/text_ox"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="26sp"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/y_orientation"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="Y"
+                        android:textColor="@android:color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
+
+                    <org.ros.android.view.RosTextView
+                        android:id="@+id/text_oy"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="26sp"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/z_orientation"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="Z"
+                        android:textColor="@android:color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
+
+                    <org.ros.android.view.RosTextView
+                        android:id="@+id/text_oz"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="26sp"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent">>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="W"
+                        android:textColor="@android:color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
+
+                    <org.ros.android.view.RosTextView
+                            android:id="@+id/text_ow"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                             android:textSize="26sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"                                       android:text="" />
+                </TableRow>
+
+            </TableLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@android:color/black">
+
+            <TableLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_joystick2"
+                app:layout_constraintEnd_toStartOf="@+id/layout_joystick"
+                app:layout_constraintStart_toEndOf="@+id/layout_joystick2"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/arm_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical|right"
+                        android:text="ARM"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/arm_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@android:color/background_light" />
+
+                    <TextView
+                        android:id="@+id/ob_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical|right"
+                        android:text="OFFBOARD"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/offboard_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@android:color/background_light" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/at_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical|right"
+                        android:text="Z-AXIS FIXED"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/Z_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@android:color/background_light" />
+
+                    <TextView
+                        android:id="@+id/pt_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical|right"
+                        android:text="POSITION"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/pt_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@android:color/background_light" />
+                </TableRow>
+
+            </TableLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_joystick2"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="left|center_vertical"
+                android:background="@drawable/button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layout_joystick"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_joystick"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginStart="290dp"
+                android:layout_marginLeft="290dp"
+                android:background="@drawable/button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/layout_joystick2"
+                app:layout_constraintTop_toTopOf="parent"></RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

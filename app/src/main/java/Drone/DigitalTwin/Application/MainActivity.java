@@ -1,6 +1,7 @@
 package Drone.DigitalTwin.Application;
 
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.view.View.OnTouchListener;
 
@@ -38,11 +40,14 @@ public class MainActivity extends RosActivity {
     private RosImageView<sensor_msgs.CompressedImage> cameraView;
     private static final String cameraTopic = "/camera/color/image_raw/compressed";
 
+    TableLayout layout_position;
     RelativeLayout layout_joystick;
+    RelativeLayout layout_joystick2;
     ImageView image_joystick, image_border;
     TextView textView1, textView2, textView3, textView4, textView5;
 
     JoyStickClass js;
+    JoyStickClass js2;
 
     private RosTextView<std_msgs.String> rosTextView_x,rosTextView_y,rosTextView_z,rosTextView_ox,rosTextView_oy,rosTextView_oz,rosTextView_ow;
     private RosTextView<std_msgs.String> rosTextView_b;
@@ -54,6 +59,8 @@ public class MainActivity extends RosActivity {
     private ZTalker ztalker;
     private Listener listener;
     private ProgressBar progress;
+    public boolean zcheck;
+    public int zval;
     public MainActivity(){
 
         super("Ros-Node-Notfication-ticker","ROS-Nodes-Notification-Title");
@@ -96,6 +103,34 @@ public class MainActivity extends RosActivity {
             }
         });
 
+        Switch position_switch = (Switch)findViewById(R.id.pt_switch);
+        position_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                layout_position = (TableLayout)findViewById(R.id.position_layout);
+                if(isChecked){
+                    layout_position.setVisibility(View.VISIBLE);
+                }
+                else{
+                    layout_position.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        Switch z_switch = (Switch)findViewById(R.id.Z_switch);
+        z_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    zcheck = false;
+                }
+                else{
+                    zcheck = true;
+                }
+            }
+        });
+
 
 
         SeekBar sb = (SeekBar)findViewById(R.id.height);
@@ -103,6 +138,7 @@ public class MainActivity extends RosActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 ZTalker.cmd = Integer.toString(progress);
+                zval = progress;
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -179,6 +215,7 @@ public class MainActivity extends RosActivity {
                 return message.getData();
             }
         });
+        Resources res = getResources();
         progress = (ProgressBar) findViewById(R.id.progress);
         rosTextView_b = (RosTextView<std_msgs.String>) findViewById(R.id.text);
         rosTextView_b.setTopicName("/drone/battery");
@@ -187,22 +224,42 @@ public class MainActivity extends RosActivity {
             @Override
             public String call(std_msgs.String message) {
                 int value = Integer.parseInt(message.getData());
-                progress.setProgress(value);
+                if(value>=100*0.7){
+                    progress.setProgressDrawable(res.getDrawable(R.drawable.progressbar));
+                    progress.setProgress(value);
+                }
+                else if(value>=100*0.2){
+                    progress.setProgressDrawable(res.getDrawable(R.drawable.progressbar_yel));
+                    progress.setProgress(value);
+                }
+                else{
+                    progress.setProgressDrawable(res.getDrawable(R.drawable.progressbar_red));
+                    progress.setProgress(value);
+                }
+                //progress.setProgress(value);
                 return message.getData();
             }
         });
 
 
-
+        layout_joystick2 = (RelativeLayout)findViewById(R.id.layout_joystick2);
         layout_joystick = (RelativeLayout)findViewById(R.id.layout_joystick);
 
         js = new JoyStickClass(getApplicationContext(), layout_joystick, R.drawable.rec);
         js.setStickSize(150, 150);
-        js.setLayoutSize(500, 500);
+        js.setLayoutSize(400, 400);
         js.setLayoutAlpha(150);
         js.setStickAlpha(100);
         js.setOffset(90);
         js.setMinimumDistance(50);
+
+        js2 = new JoyStickClass(getApplicationContext(), layout_joystick2, R.drawable.rec);
+        js2.setStickSize(150, 150);
+        js2.setLayoutSize(400, 400);
+        js2.setLayoutAlpha(150);
+        js2.setStickAlpha(100);
+        js2.setOffset(90);
+        js2.setMinimumDistance(50);
 
 
 
@@ -229,6 +286,36 @@ public class MainActivity extends RosActivity {
                     } else if(direction == JoyStickClass.STICK_UPLEFT) {
                         Talker.cmd = "GLEFT";
                     } else if(direction == JoyStickClass.STICK_NONE) {
+                        Talker.cmd = "STOP";
+                    }
+                } else{
+                    Talker.cmd = "STOP";
+                }
+                return true;
+            }
+        });
+
+        layout_joystick2.setOnTouchListener(new OnTouchListener() {
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+                js2.drawStick(arg1);
+                if(arg1.getAction() == MotionEvent.ACTION_DOWN
+                        || arg1.getAction() == MotionEvent.ACTION_MOVE) {
+                    int direction = js2.get4Direction();
+                    if(direction == JoyStickClass.STICK_UP && zcheck==true) {
+                        if(zval < sb.getMax()){
+                            zval++;
+                            sb.setProgress(zval);
+                        }
+                    }  else if(direction == JoyStickClass.STICK_RIGHT) {
+                        Talker.cmd = "RYAW";
+                    }  else if(direction == JoyStickClass.STICK_DOWN && zcheck==true) {
+                        if(zval > 0){
+                            zval--;
+                            sb.setProgress(zval);
+                        }
+                    }  else if(direction == JoyStickClass.STICK_LEFT) {
+                        Talker.cmd = "LYAW";
+                    }  else if(direction == JoyStickClass.STICK_NONE) {
                         Talker.cmd = "STOP";
                     }
                 } else{
