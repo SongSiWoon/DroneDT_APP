@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.view.View.OnTouchListener;
+import android.widget.ToggleButton;
 
 import com.example.ros_nodes.R;
 
@@ -43,11 +44,11 @@ public class MainActivity extends RosActivity {
     TableLayout layout_position;
     RelativeLayout layout_joystick;
     RelativeLayout layout_joystick2;
-    ImageView image_joystick, image_border;
+    ImageView image_joystick, image_border, ryaw, lyaw;
     TextView textView1, textView2, textView3, textView4, textView5;
 
     JoyStickClass js;
-    JoyStickClass js2;
+
 
     private RosTextView<std_msgs.String> rosTextView_x,rosTextView_y,rosTextView_z,rosTextView_ox,rosTextView_oy,rosTextView_oz,rosTextView_ow;
     private RosTextView<std_msgs.String> rosTextView_b;
@@ -79,8 +80,8 @@ public class MainActivity extends RosActivity {
         cameraView.setMessageType(sensor_msgs.CompressedImage._TYPE);
         cameraView.setMessageToBitmapCallable(new BitmapFromCompressedImage());
 
-        Switch arm_switch = (Switch)findViewById(R.id.arm_switch);
-        arm_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        ToggleButton arm_btn = (ToggleButton)findViewById(R.id.arm_btn);
+        arm_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
                     Talker.cmd = "ARM";
@@ -91,8 +92,8 @@ public class MainActivity extends RosActivity {
             }
         });
 
-        Switch offboard_switch = (Switch)findViewById(R.id.offboard_switch);
-        offboard_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        ToggleButton offboard_btn = (ToggleButton)findViewById(R.id.offboard_btn);
+        offboard_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
                     Talker.cmd = "TO";
@@ -103,118 +104,103 @@ public class MainActivity extends RosActivity {
             }
         });
 
-        Switch position_switch = (Switch)findViewById(R.id.pt_switch);
-        position_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                layout_position = (TableLayout)findViewById(R.id.position_layout);
-                if(isChecked){
-                    layout_position.setVisibility(View.VISIBLE);
-                }
-                else{
-                    layout_position.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
+//        Switch position_switch = (Switch)findViewById(R.id.pt_switch);
+//        position_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                layout_position = (TableLayout)findViewById(R.id.position_layout);
+//                if(isChecked){
+//                    layout_position.setVisibility(View.VISIBLE);
+//                }
+//                else{
+//                    layout_position.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
+//
+//        Switch z_switch = (Switch)findViewById(R.id.Z_switch);
+//        z_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//                if(isChecked){
+//                    zcheck = false;
+//                }
+//                else{
+//                    zcheck = true;
+//                }
+//            }
+//        });
 
-        Switch z_switch = (Switch)findViewById(R.id.Z_switch);
-        z_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if(isChecked){
-                    zcheck = false;
-                }
-                else{
-                    zcheck = true;
-                }
-            }
-        });
 
 
 
-        SeekBar sb = (SeekBar)findViewById(R.id.height);
-        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                ZTalker.cmd = Integer.toString(progress);
-                zval = progress;
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        rosTextView_x = (RosTextView<std_msgs.String>) findViewById(R.id.text_x);
-        rosTextView_x.setTopicName("/drone/position/x");
-        rosTextView_x.setMessageType(std_msgs.String._TYPE);
-        rosTextView_x.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
-            @Override
-            public String call(std_msgs.String message) {
-                return message.getData();
-            }
-        });
-
-        rosTextView_y = (RosTextView<std_msgs.String>) findViewById(R.id.text_y);
-        rosTextView_y.setTopicName("/drone/position/y");
-        rosTextView_y.setMessageType(std_msgs.String._TYPE);
-        rosTextView_y.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
-            @Override
-            public String call(std_msgs.String message) {
-                return message.getData();
-            }
-        });
-
-        rosTextView_z = (RosTextView<std_msgs.String>) findViewById(R.id.text_z);
-        rosTextView_z.setTopicName("/drone/position/z");
-        rosTextView_z.setMessageType(std_msgs.String._TYPE);
-        rosTextView_z.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
-            @Override
-            public String call(std_msgs.String message) {
-                return message.getData();
-            }
-        });
-        rosTextView_ox = (RosTextView<std_msgs.String>) findViewById(R.id.text_ox);
-        rosTextView_ox.setTopicName("/drone/position/ox");
-        rosTextView_ox.setMessageType(std_msgs.String._TYPE);
-        rosTextView_ox.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
-            @Override
-            public String call(std_msgs.String message) {
-                return message.getData();
-            }
-        });
-        rosTextView_oy = (RosTextView<std_msgs.String>) findViewById(R.id.text_oy);
-        rosTextView_oy.setTopicName("/drone/position/oy");
-        rosTextView_oy.setMessageType(std_msgs.String._TYPE);
-        rosTextView_oy.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
-            @Override
-            public String call(std_msgs.String message) {
-                return message.getData();
-            }
-        });
-        rosTextView_oz = (RosTextView<std_msgs.String>) findViewById(R.id.text_oz);
-        rosTextView_oz.setTopicName("/drone/position/oz");
-        rosTextView_oz.setMessageType(std_msgs.String._TYPE);
-        rosTextView_oz.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
-            @Override
-            public String call(std_msgs.String message) {
-
-                return message.getData();
-            }
-        });
-        rosTextView_ow = (RosTextView<std_msgs.String>) findViewById(R.id.text_ow);
-        rosTextView_ow.setTopicName("/drone/position/ow");
-        rosTextView_ow.setMessageType(std_msgs.String._TYPE);
-        rosTextView_ow.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
-            @Override
-            public String call(std_msgs.String message) {
-                return message.getData();
-            }
-        });
+//        rosTextView_x = (RosTextView<std_msgs.String>) findViewById(R.id.text_x);
+//        rosTextView_x.setTopicName("/drone/position/x");
+//        rosTextView_x.setMessageType(std_msgs.String._TYPE);
+//        rosTextView_x.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
+//            @Override
+//            public String call(std_msgs.String message) {
+//                return message.getData();
+//            }
+//        });
+//
+//        rosTextView_y = (RosTextView<std_msgs.String>) findViewById(R.id.text_y);
+//        rosTextView_y.setTopicName("/drone/position/y");
+//        rosTextView_y.setMessageType(std_msgs.String._TYPE);
+//        rosTextView_y.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
+//            @Override
+//            public String call(std_msgs.String message) {
+//                return message.getData();
+//            }
+//        });
+//
+//        rosTextView_z = (RosTextView<std_msgs.String>) findViewById(R.id.text_z);
+//        rosTextView_z.setTopicName("/drone/position/z");
+//        rosTextView_z.setMessageType(std_msgs.String._TYPE);
+//        rosTextView_z.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
+//            @Override
+//            public String call(std_msgs.String message) {
+//                return message.getData();
+//            }
+//        });
+//        rosTextView_ox = (RosTextView<std_msgs.String>) findViewById(R.id.text_ox);
+//        rosTextView_ox.setTopicName("/drone/position/ox");
+//        rosTextView_ox.setMessageType(std_msgs.String._TYPE);
+//        rosTextView_ox.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
+//            @Override
+//            public String call(std_msgs.String message) {
+//                return message.getData();
+//            }
+//        });
+//        rosTextView_oy = (RosTextView<std_msgs.String>) findViewById(R.id.text_oy);
+//        rosTextView_oy.setTopicName("/drone/position/oy");
+//        rosTextView_oy.setMessageType(std_msgs.String._TYPE);
+//        rosTextView_oy.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
+//            @Override
+//            public String call(std_msgs.String message) {
+//                return message.getData();
+//            }
+//        });
+//        rosTextView_oz = (RosTextView<std_msgs.String>) findViewById(R.id.text_oz);
+//        rosTextView_oz.setTopicName("/drone/position/oz");
+//        rosTextView_oz.setMessageType(std_msgs.String._TYPE);
+//        rosTextView_oz.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
+//            @Override
+//            public String call(std_msgs.String message) {
+//
+//                return message.getData();
+//            }
+//        });
+//        rosTextView_ow = (RosTextView<std_msgs.String>) findViewById(R.id.text_ow);
+//        rosTextView_ow.setTopicName("/drone/position/ow");
+//        rosTextView_ow.setMessageType(std_msgs.String._TYPE);
+//        rosTextView_ow.setMessageToStringCallable(new MessageCallable<String, std_msgs.String>() {
+//            @Override
+//            public String call(std_msgs.String message) {
+//                return message.getData();
+//            }
+//        });
         Resources res = getResources();
         progress = (ProgressBar) findViewById(R.id.progress);
         rosTextView_b = (RosTextView<std_msgs.String>) findViewById(R.id.text);
@@ -242,7 +228,6 @@ public class MainActivity extends RosActivity {
         });
 
 
-        layout_joystick2 = (RelativeLayout)findViewById(R.id.layout_joystick2);
         layout_joystick = (RelativeLayout)findViewById(R.id.layout_joystick);
 
         js = new JoyStickClass(getApplicationContext(), layout_joystick, R.drawable.rec);
@@ -253,13 +238,6 @@ public class MainActivity extends RosActivity {
         js.setOffset(90);
         js.setMinimumDistance(50);
 
-        js2 = new JoyStickClass(getApplicationContext(), layout_joystick2, R.drawable.rec);
-        js2.setStickSize(150, 150);
-        js2.setLayoutSize(400, 400);
-        js2.setLayoutAlpha(150);
-        js2.setStickAlpha(100);
-        js2.setOffset(90);
-        js2.setMinimumDistance(50);
 
 
 
@@ -295,35 +273,69 @@ public class MainActivity extends RosActivity {
             }
         });
 
-        layout_joystick2.setOnTouchListener(new OnTouchListener() {
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-                js2.drawStick(arg1);
-                if(arg1.getAction() == MotionEvent.ACTION_DOWN
-                        || arg1.getAction() == MotionEvent.ACTION_MOVE) {
-                    int direction = js2.get4Direction();
-                    if(direction == JoyStickClass.STICK_UP && zcheck==true) {
-                        if(zval < sb.getMax()){
-                            zval++;
-                            sb.setProgress(zval);
-                        }
-                    }  else if(direction == JoyStickClass.STICK_RIGHT) {
-                        Talker.cmd = "RYAW";
-                    }  else if(direction == JoyStickClass.STICK_DOWN && zcheck==true) {
-                        if(zval > 0){
-                            zval--;
-                            sb.setProgress(zval);
-                        }
-                    }  else if(direction == JoyStickClass.STICK_LEFT) {
-                        Talker.cmd = "LYAW";
-                    }  else if(direction == JoyStickClass.STICK_NONE) {
-                        Talker.cmd = "STOP";
-                    }
-                } else{
-                    Talker.cmd = "STOP";
-                }
+        ryaw = (ImageView)findViewById(R.id.ryaw);
+        lyaw = (ImageView)findViewById(R.id.lyaw);
+        SeekBar sb = (SeekBar)findViewById(R.id.height);
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                ZTalker.cmd = Integer.toString(progress);
+                zval = progress;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        ryaw.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Talker.cmd = "RYAW";
                 return true;
             }
         });
+
+        lyaw.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Talker.cmd = "LYAW";
+                return false;
+            }
+        });
+
+//        layout_joystick2.setOnTouchListener(new OnTouchListener() {
+//            public boolean onTouch(View arg0, MotionEvent arg1) {
+//                js2.drawStick(arg1);
+//                if(arg1.getAction() == MotionEvent.ACTION_DOWN
+//                        || arg1.getAction() == MotionEvent.ACTION_MOVE) {
+//                    int direction = js2.get4Direction();
+//                    if(direction == JoyStickClass.STICK_UP && zcheck==true) {
+//                        if(zval < sb.getMax()){
+//                            zval++;
+//                            sb.setProgress(zval);
+//                        }
+//                    }  else if(direction == JoyStickClass.STICK_RIGHT) {
+//                        Talker.cmd = "RYAW";
+//                    }  else if(direction == JoyStickClass.STICK_DOWN && zcheck==true) {
+//                        if(zval > 0){
+//                            zval--;
+//                            sb.setProgress(zval);
+//                        }
+//                    }  else if(direction == JoyStickClass.STICK_LEFT) {
+//                        Talker.cmd = "LYAW";
+//                    }  else if(direction == JoyStickClass.STICK_NONE) {
+//                        Talker.cmd = "STOP";
+//                    }
+//                } else{
+//                    Talker.cmd = "STOP";
+//                }
+//                return true;
+//            }
+//        });
 
 
     }
@@ -349,13 +361,13 @@ public class MainActivity extends RosActivity {
 //        this.nodeMainExecutor = nodeMainExecutor;
 
         NameResolver appNameResolver = nodeConfiguration.getParentResolver();
-        nodeMainExecutor.execute(rosTextView_x,nodeConfiguration.setNodeName("android/textView_x"));
-        nodeMainExecutor.execute(rosTextView_y,nodeConfiguration.setNodeName("android/textView_y"));
-        nodeMainExecutor.execute(rosTextView_z,nodeConfiguration.setNodeName("android/textView_z"));
-        nodeMainExecutor.execute(rosTextView_ox,nodeConfiguration.setNodeName("android/textView_ox"));
-        nodeMainExecutor.execute(rosTextView_oy,nodeConfiguration.setNodeName("android/textView_oy"));
-        nodeMainExecutor.execute(rosTextView_oz,nodeConfiguration.setNodeName("android/textView_oz"));
-        nodeMainExecutor.execute(rosTextView_ow,nodeConfiguration.setNodeName("android/textView_ow"));
+//        nodeMainExecutor.execute(rosTextView_x,nodeConfiguration.setNodeName("android/textView_x"));
+//        nodeMainExecutor.execute(rosTextView_y,nodeConfiguration.setNodeName("android/textView_y"));
+//        nodeMainExecutor.execute(rosTextView_z,nodeConfiguration.setNodeName("android/textView_z"));
+//        nodeMainExecutor.execute(rosTextView_ox,nodeConfiguration.setNodeName("android/textView_ox"));
+//        nodeMainExecutor.execute(rosTextView_oy,nodeConfiguration.setNodeName("android/textView_oy"));
+//        nodeMainExecutor.execute(rosTextView_oz,nodeConfiguration.setNodeName("android/textView_oz"));
+//        nodeMainExecutor.execute(rosTextView_ow,nodeConfiguration.setNodeName("android/textView_ow"));
         nodeMainExecutor.execute(rosTextView_b,nodeConfiguration.setNodeName("android/textView_b"));
 
 
