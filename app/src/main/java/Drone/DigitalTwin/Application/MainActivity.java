@@ -280,7 +280,6 @@ public class MainActivity extends RosActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 ZTalker.cmd = Integer.toString(progress);
-                zval = progress;
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -294,16 +293,40 @@ public class MainActivity extends RosActivity {
         ryaw.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Talker.cmd = "RYAW";
-                return true;
+                boolean ret = false;
+
+                switch (event.getActionMasked()){
+                    case MotionEvent.ACTION_DOWN:
+                        Talker.cmd = "RYAW";
+                        ret = true;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Talker.cmd = "STOP";
+                        ret = true;
+                        break;
+                }
+
+                return ret;
             }
         });
 
         lyaw.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Talker.cmd = "LYAW";
-                return false;
+                boolean ret = false;
+
+                switch (event.getActionMasked()){
+                    case MotionEvent.ACTION_DOWN:
+                        Talker.cmd = "LYAW";
+                        ret = true;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Talker.cmd = "STOP";
+                        ret = true;
+                        break;
+                }
+
+                return ret;
             }
         });
 

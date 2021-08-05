@@ -90,8 +90,8 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65" />
 
-
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="300dp"
         android:layout_height="250dp"
         android:layout_marginStart="40dp"
@@ -106,7 +106,7 @@
             android:id="@+id/lyaw"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="4.5"
+            android:layout_weight="4"
             android:rotation="30"
             android:rotationY="-180"
             android:src="@drawable/lyaw" />
@@ -114,14 +114,15 @@
         <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_weight="2"
             tools:ignore="MissingClass">
+
             <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
                 android:id="@+id/height"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:splitTrack="false"
                 android:progressDrawable="@drawable/seekbar"
+                android:splitTrack="false"
                 android:thumb="@drawable/seekbar_thumb"
                 app:seekBarRotation="CW270" /> <!-- Rotation: CW90 or CW270 -->
         </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
@@ -130,7 +131,7 @@
             android:id="@+id/ryaw"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="4.5"
+            android:layout_weight="4"
             android:rotation="30"
             android:src="@drawable/ryaw" />
     </LinearLayout>
